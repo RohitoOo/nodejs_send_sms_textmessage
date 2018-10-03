@@ -21,7 +21,12 @@ app.use(express.static(__dirname + '/public'))
 
 
 app.get('/' , (req,res)=> {
-    res.render('test')
+    res.render('index')
+})
+
+app.post('/' , (req,res)=>{
+    res.send(req.body)
+    console.log(req.body.text)
 })
 
 
