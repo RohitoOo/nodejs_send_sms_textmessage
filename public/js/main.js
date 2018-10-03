@@ -6,6 +6,14 @@ const numberInput = document.getElementById('number'),
 
     button.addEventListener('click' , send, false );
 
+    const socket = io();
+
+    socket.on('smsStatus', (data) => {
+
+        response.innerHTML = "Message Successfully Sent To : " + data.number
+
+    })
+    
     function send (){
         const number = numberInput.value.replace(/\D/, "");
         const text = textMessage.value
@@ -32,5 +40,3 @@ const numberInput = document.getElementById('number'),
             console.log(err)
         })
     }
-
-console.log('Worked')

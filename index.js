@@ -49,11 +49,22 @@ app.post('/' , (req,res)=>{
               if(err){
                   console.log(err)
               }else {
-                  console.dir(responseData)
+                  console.dir("Check Terminal", responseData)
+                  // Get Data From Response
+
+                  const data = {
+                      id: responseData.messages[0]['message-id'],
+                      number: responseData.messages[0]['to']
+                  }
+
+                  // Emit to the Client
+                  io.emit('smsStatus', data)
               }
           }  
         )
 })
+
+
 
 
 const port = 3000;
@@ -61,4 +72,14 @@ const port = 3000;
 const server = app.listen(port , () => {
   
     console.log("Server is Live on port 3000")
+})
+
+
+const io = socketio(server); 
+
+io.on('connection' , (socket) => {
+    console.log('Connected');
+    io.on('disconnect' , ()=> {
+        console.log("Disconnected")
+    })
 })
