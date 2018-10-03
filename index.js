@@ -24,9 +24,35 @@ app.get('/' , (req,res)=> {
     res.render('index')
 })
 
+
+const nexmo = new Nexmo({
+    apiKey : '2545146d',
+    apiSecret: 'LJu5dU3Uohwvs1ub'
+}, {debug: true});
+
+
 app.post('/' , (req,res)=>{
-    res.send(req.body)
-    console.log(req.body.text)
+    // res.send(req.body)
+    // console.log(req.body.text)
+
+    // Add Value from Post Request To Variable 
+
+    const number = req.body.number; 
+    const message = req.body.text;
+
+        console.log("Terminal", number,message)
+
+
+    nexmo.message.sendSms(
+        '12345678901', number, message, {type: 'unicode'},
+          (err, responseData) => {
+              if(err){
+                  console.log(err)
+              }else {
+                  console.dir(responseData)
+              }
+          }  
+        )
 })
 
 
