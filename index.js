@@ -32,15 +32,11 @@ const nexmo = new Nexmo({
 
 
 app.post('/' , (req,res)=>{
-    // res.send(req.body)
-    // console.log(req.body.text)
 
     // Add Value from Post Request To Variable 
 
     const number = req.body.number; 
     const message = req.body.text;
-
-        console.log("Terminal", number,message)
 
 
     nexmo.message.sendSms(
@@ -54,7 +50,8 @@ app.post('/' , (req,res)=>{
 
                   const data = {
                       id: responseData.messages[0]['message-id'],
-                      number: responseData.messages[0]['to']
+                      number: responseData.messages[0]['to'],
+                      message
                   }
 
                   // Emit to the Client
@@ -78,7 +75,7 @@ const server = app.listen(port , () => {
 const io = socketio(server); 
 
 io.on('connection' , (socket) => {
-    console.log('Connected');
+    console.log('Socket Io Connected');
     io.on('disconnect' , ()=> {
         console.log("Disconnected")
     })
