@@ -10,7 +10,6 @@ const app = express();
 app.set('view engine' , 'html')
 app.engine('html' , ejs.renderFile)
 
-
 // Body Parer MiddleWare
 
 app.use(bodyParser.json());
@@ -19,17 +18,14 @@ app.use(bodyParser.urlencoded({extended:true}));
 // Public Folder Setup
 app.use(express.static(__dirname + '/public'))
 
-
 app.get('/' , (req,res)=> {
     res.render('index')
 })
-
 
 const nexmo = new Nexmo({
     apiKey : '2545146d',
     apiSecret: 'LJu5dU3Uohwvs1ub'
 }, {debug: true});
-
 
 app.post('/' , (req,res)=>{
 
@@ -37,7 +33,6 @@ app.post('/' , (req,res)=>{
 
     const number = req.body.number; 
     const message = req.body.text;
-
 
     nexmo.message.sendSms(
         '12345678901', number, message, {type: 'unicode'},
@@ -47,13 +42,11 @@ app.post('/' , (req,res)=>{
               }else {
                   console.dir("Check Terminal", responseData)
                   // Get Data From Response
-
                   const data = {
                       id: responseData.messages[0]['message-id'],
                       number: responseData.messages[0]['to'],
                       message
                   }
-
                   // Emit to the Client
                   io.emit('smsStatus', data)
               }
@@ -61,16 +54,12 @@ app.post('/' , (req,res)=>{
         )
 })
 
-
-
-
 const port = 3000;
 
-const server = app.listen(port , () => {
+const server = app.listen(process.env.PORT || port , () => {
   
     console.log("Server is Live on port 3000")
 })
-
 
 const io = socketio(server); 
 
